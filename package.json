@@ -1,0 +1,76 @@
+{
+  "name": "pass-ats",
+  "version": "1.0.0",
+  "description": "A resume parser and ATS (Applicant Tracking System) optimizer tool designed to help job seekers enhance their resumes for better visibility and ranking in ATS software used by employers.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+   "test": "node --test \"tests/**/*.test.ts\"",
+    "test:watch": "node --test --watch \"tests/**/*.test.ts\"",
+    "build": "tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "inspect": "npm run build && npx @modelcontextprotocol/inspector node build/index.js",
+    "inspect:http": "npm run build && npx @modelcontextprotocol/inspector http://localhost:3000/mcp",
+    "dev": "npm run build && node dev",
+    "serve:stdio": "npm run build && cross-env STARTER_TRANSPORT=stdio node build/index.js",
+"serve:http": "npm run build && cross-env STARTER_TRANSPORT=http PORT=3000 node build/index.js",
+    "gen:tool": "hygen tool new",
+    "gen:prompt": "hygen prompt new",
+    "gen:resource": "hygen resource new",
+    "knip": "knip",
+    "knip:production": "knip --production",
+    "knip:fix": "knip --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keleshteri/PassATS.git"
+  },
+  "keywords": [
+    "mcp",
+    "resume",
+    "parser",
+    "ATS",
+    "optimizer",
+    "job-seekers",
+    "job-applications"
+  ],
+  "author": "Mehdi Shaban Keleshteri",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/keleshteri/PassATS/issues"
+  },
+  "homepage": "https://github.com/keleshteri/PassATS#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.19.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "fast-glob": "^3.3.3",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.2",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.36.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-sonarjs": "^3.0.5",
+    "hygen": "^6.2.11",
+    "knip": "^5.64.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.45.0"
+  },
+  "bin": {
+    "mcp-pass-ats": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ]
+}
