@@ -1,0 +1,21 @@
+{
+  "servers": {
+    "pass-ats-stdio": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./build/index.js"
+      ],
+      "env": {
+        "STARTER_TRANSPORT": "stdio"
+      }
+    },
+    "pass-ats-http": {
+      "type": "http",
+      "url": "http://localhost:3000/mcp",
+      "headers": {
+        "x-mcp-session": "default-session"
+      }
+    }
+  }
+}

@@ -8,11 +8,12 @@ export const registerableModuleSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   register: z.function()
-    .args(z.any())
-    .returns(z.union([z.void(), z.promise(z.void())]))
 });
 
-export type RegisterableModule = z.infer<typeof registerableModuleSchema> & {
+export type RegisterableModule = {
+  type: "tool" | "resource" | "prompt";
+  name: string;
+  description?: string;
   register: (server: McpServer) => void | Promise<void>;
 };
 

@@ -35,10 +35,12 @@ export function filePathToUrl(filePath: string): string {
  * @returns Array of glob patterns for module discovery
  */
 export function getModulePatterns(rootDir: string): Array<string> {
+  // Use forward slashes for glob patterns to ensure cross-platform compatibility
+  const normalizedRoot = rootDir.replace(/\\/g, '/');
   return [
-    path.join(rootDir, "tools", "*.js"),
-    path.join(rootDir, "resources", "*.js"),
-    path.join(rootDir, "prompts", "*.js"),
+    `${normalizedRoot}/tools/*.js`,
+    `${normalizedRoot}/resources/*.js`,
+    `${normalizedRoot}/prompts/*.js`,
   ];
 }
 
@@ -48,7 +50,15 @@ export function getModulePatterns(rootDir: string): Array<string> {
  * @returns The root directory path
  */
 export function getRootDir(importMetaUrl: string): string {
-  return path.dirname(path.dirname(new URL(importMetaUrl).pathname));
+  const url = new URL(importMetaUrl);
+  let filePath = url.pathname;
+  
+  // Handle Windows paths - remove leading slash if present
+  if (process.platform === 'win32' && filePath.startsWith('/')) {
+    filePath = filePath.substring(1);
+  }
+  
+  return path.dirname(path.dirname(filePath));
 }
 
 /**
