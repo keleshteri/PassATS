@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "get-resume-template MCP Tool Contract",
+  "description": "Returns the standard markdown resume template specification",
+  "type": "object",
+  "tool": {
+    "name": "get-resume-template",
+    "description": "Returns the standard markdown resume template specification that defines the required structure and syntax for valid resume content.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": ["markdown", "json"],
+          "description": "Return format for the template (optional, default: markdown)",
+          "default": "markdown"
+        }
+      }
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "type": "string",
+          "description": "The template content in requested format"
+        },
+        "version": {
+          "type": "string",
+          "description": "Template specification version (semver)"
+        },
+        "sections": {
+          "type": "array",
+          "description": "List of supported sections",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              },
+              "example": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "required", "description"]
+          }
+        },
+        "rules": {
+          "type": "array",
+          "description": "Formatting and validation rules",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["template", "version", "sections", "rules"]
+    }
+  },
+  "examples": [
+    {
+      "name": "Get markdown template",
+      "input": {
+        "format": "markdown"
+      },
+      "output": {
+        "template": "# [Full Name]\n\n**Email**: [email] | **Phone**: [+1234567890] | **Location**: [City, State]\n[LinkedIn URL] | [GitHub URL]\n\n## Professional Summary\n[2-3 sentence summary of your professional background]\n\n## Work Experience\n\n### [Job Title] at [Company Name]\n**[City, State]** | **[MM/YYYY] - [MM/YYYY or Present]**\n\n- [Achievement/responsibility starting with action verb]\n- [Achievement with quantifiable result]\n- [Key technology or skill demonstrated]\n\n## Education\n\n### [Degree] - [Major] - [Institution]\n**[City, State]** | **Graduated: [MM/YYYY]**\nGPA: [X.XX] (if 3.5+)\n\n## Skills\n\n**[Category 1]**: [Skill 1], [Skill 2], [Skill 3]\n**[Category 2]**: [Skill 1], [Skill 2], [Skill 3]\n\n## Certifications (Optional)\n\n- [Certification Name] - [Issuer] ([MM/YYYY])\n\n## Projects (Optional)\n\n### [Project Name]\n[Brief description]\n**Technologies**: [Tech stack]\n**Link**: [URL]",
+        "version": "1.0.0",
+        "sections": [
+          {
+            "name": "Contact Information",
+            "required": true,
+            "description": "Name, email, phone, and optional social links"
+          },
+          {
+            "name": "Professional Summary",
+            "required": false,
+            "description": "Brief 2-3 sentence career summary"
+          },
+          {
+            "name": "Work Experience",
+            "required": true,
+            "description": "Employment history in reverse chronological order"
+          },
+          {
+            "name": "Education",
+            "required": true,
+            "description": "Academic background"
+          },
+          {
+            "name": "Skills",
+            "required": true,
+            "description": "Technical and professional skills"
+          },
+          {
+            "name": "Certifications",
+            "required": false,
+            "description": "Professional certifications and licenses"
+          },
+          {
+            "name": "Projects",
+            "required": false,
+            "description": "Notable personal or professional projects"
+          }
+        ],
+        "rules": [
+          "Start with H1 heading for name",
+          "Contact info on second line with bold labels",
+          "Use H2 for main sections",
+          "Use H3 for job titles and positions",
+          "Dates in bold: **MM/YYYY - MM/YYYY**",
+          "Bullet points with - or *",
+          "No personal pronouns (I, me, my)",
+          "Phone in E.164 format (+1234567890)",
+          "URLs must be HTTPS",
+          "Maximum 50,000 characters total",
+          "No H4+ headings",
+          "No images or tables (except skills)",
+          "Reverse chronological order for experience/education"
+        ]
+      }
+    },
+    {
+      "name": "Get JSON template structure",
+      "input": {
+        "format": "json"
+      },
+      "output": {
+        "template": "{\"name\":\"[Full Name]\",\"contact\":{\"email\":\"[email]\",\"phone\":\"[+1234567890]\",\"location\":\"[City, State]\",\"linkedin\":\"[URL]\",\"github\":\"[URL]\"},\"summary\":\"[Professional summary]\",\"experience\":[{\"title\":\"[Job Title]\",\"company\":\"[Company]\",\"location\":\"[City, State]\",\"startDate\":\"[MM/YYYY]\",\"endDate\":\"[MM/YYYY or Present]\",\"responsibilities\":[\"[Achievement 1]\",\"[Achievement 2]\"]}],\"education\":[{\"degree\":\"[Degree]\",\"institution\":\"[Institution]\",\"location\":\"[City, State]\",\"graduationDate\":\"[MM/YYYY]\",\"gpa\":\"[X.XX]\"}],\"skills\":[{\"category\":\"[Category]\",\"skills\":[\"[Skill 1]\",\"[Skill 2]\"]}]}",
+        "version": "1.0.0",
+        "sections": [],
+        "rules": []
+      }
+    }
+  ],
+  "testScenarios": [
+    {
+      "description": "Should return markdown template by default",
+      "input": {},
+      "expectedOutput": {
+        "template": "# [Full Name]",
+        "version": "1.0.0"
+      },
+      "assertions": [
+        "output.template should start with '# [Full Name]'",
+        "output.version should be valid semver",
+        "output.sections should be an array",
+        "output.sections should include Work Experience, Education, Skills as required",
+        "output.rules should be an array of strings"
+      ]
+    },
+    {
+      "description": "Should return JSON template when format=json",
+      "input": {
+        "format": "json"
+      },
+      "expectedOutput": {
+        "template": "{",
+        "version": "1.0.0"
+      },
+      "assertions": [
+        "output.template should be valid JSON string",
+        "JSON.parse(output.template) should succeed",
+        "parsed template should have name, contact, experience, education, skills properties"
+      ]
+    },
+    {
+      "description": "Should include all required sections in metadata",
+      "input": {
+        "format": "markdown"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.sections should include section with name='Work Experience' and required=true",
+        "output.sections should include section with name='Education' and required=true",
+        "output.sections should include section with name='Skills' and required=true",
+        "output.sections should include section with name='Certifications' and required=false"
+      ]
+    },
+    {
+      "description": "Should include comprehensive formatting rules",
+      "input": {},
+      "expectedOutput": {},
+      "assertions": [
+        "output.rules should include 'Start with H1 heading for name'",
+        "output.rules should include 'Phone in E.164 format'",
+        "output.rules should include 'No personal pronouns'",
+        "output.rules should include 'Reverse chronological order'",
+        "output.rules.length should be >= 10"
+      ]
+    }
+  ]
+}

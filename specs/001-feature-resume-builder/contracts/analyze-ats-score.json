@@ -1,0 +1,511 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "analyze-ats-score MCP Tool Contract",
+  "description": "Analyzes resume content for ATS compatibility and returns a score with recommendations",
+  "type": "object",
+  "tool": {
+    "name": "analyze-ats-score",
+    "description": "Analyzes resume content for ATS (Applicant Tracking System) compatibility. Returns a numerical score (0-100), identified issues, and actionable recommendations for improvement.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Markdown-formatted resume content to analyze",
+          "minLength": 1
+        },
+        "jobDescription": {
+          "type": "string",
+          "description": "Optional job description for targeted analysis"
+        },
+        "detailLevel": {
+          "type": "string",
+          "enum": ["basic", "detailed", "comprehensive"],
+          "description": "Level of detail in analysis (default: detailed)",
+          "default": "detailed"
+        }
+      },
+      "required": ["content"]
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Overall ATS compatibility score (0-100)"
+        },
+        "rating": {
+          "type": "string",
+          "enum": ["poor", "fair", "good", "excellent"],
+          "description": "Categorical rating based on score"
+        },
+        "breakdown": {
+          "type": "object",
+          "description": "Score breakdown by category",
+          "properties": {
+            "formatting": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 30,
+              "description": "Formatting & structure score (max 30)"
+            },
+            "keywords": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 25,
+              "description": "Keywords & content score (max 25)"
+            },
+            "technical": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 25,
+              "description": "Technical compatibility score (max 25)"
+            },
+            "readability": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 20,
+              "description": "Readability & organization score (max 20)"
+            }
+          },
+          "required": ["formatting", "keywords", "technical", "readability"]
+        },
+        "issues": {
+          "type": "array",
+          "description": "Identified ATS compatibility issues",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "enum": ["formatting", "structure", "keywords", "compatibility", "readability"]
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["critical", "warning", "info"]
+              },
+              "description": {
+                "type": "string",
+                "description": "Human-readable issue description"
+              },
+              "location": {
+                "type": "string",
+                "description": "Section or line where issue occurs (optional)"
+              },
+              "impact": {
+                "type": "number",
+                "description": "Points deducted due to this issue"
+              }
+            },
+            "required": ["category", "severity", "description", "impact"]
+          }
+        },
+        "recommendations": {
+          "type": "array",
+          "description": "Actionable improvement recommendations",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Recommendation title"
+              },
+              "description": {
+                "type": "string",
+                "description": "Detailed recommendation"
+              },
+              "category": {
+                "type": "string",
+                "enum": ["formatting", "structure", "keywords", "compatibility", "readability"]
+              },
+              "potentialGain": {
+                "type": "number",
+                "description": "Points that could be gained"
+              },
+              "priority": {
+                "type": "string",
+                "enum": ["high", "medium", "low"]
+              }
+            },
+            "required": ["title", "description", "category", "potentialGain", "priority"]
+          }
+        },
+        "strengths": {
+          "type": "array",
+          "description": "Resume strengths and ATS-friendly elements",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "analyzerVersion": {
+              "type": "string",
+              "description": "Scoring algorithm version"
+            },
+            "analyzedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "resumeLength": {
+              "type": "number",
+              "description": "Word count"
+            },
+            "sectionsFound": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "required": ["score", "rating", "breakdown", "issues", "recommendations"]
+    }
+  },
+  "examples": [
+    {
+      "name": "Well-optimized resume",
+      "input": {
+        "content": "# Jane Doe\n\n**Email**: jane@example.com | **Phone**: +12345678901 | **Location**: San Francisco, CA\n\n## Professional Summary\n\nSenior Software Engineer with 8 years of experience in full-stack development.\n\n## Work Experience\n\n### Senior Software Engineer at TechCorp\n**San Francisco, CA** | **01/2020 - Present**\n\n- Architected microservices handling 1M+ daily requests\n- Led team of 6 engineers in agile development\n- Reduced deployment time by 60% through CI/CD optimization\n\n### Software Engineer at StartupCo\n**Remote** | **06/2017 - 12/2019**\n\n- Developed React-based dashboard serving 10K+ users\n- Implemented RESTful APIs using Node.js and Express\n\n## Education\n\n### BS Computer Science - MIT\n**Cambridge, MA** | **Graduated: 05/2016**\nGPA: 3.8\n\n## Skills\n\n**Languages**: JavaScript, Python, TypeScript, Java\n**Frameworks**: React, Node.js, Django, Spring Boot\n**Tools**: Docker, Kubernetes, AWS, Jenkins",
+        "detailLevel": "detailed"
+      },
+      "output": {
+        "score": 88,
+        "rating": "excellent",
+        "breakdown": {
+          "formatting": 28,
+          "keywords": 23,
+          "technical": 22,
+          "readability": 15
+        },
+        "issues": [
+          {
+            "category": "formatting",
+            "severity": "info",
+            "description": "Consider adding LinkedIn profile URL for better visibility",
+            "location": "Contact Information",
+            "impact": 2
+          },
+          {
+            "category": "readability",
+            "severity": "warning",
+            "description": "Resume could benefit from more quantifiable achievements",
+            "location": "Work Experience",
+            "impact": 5
+          }
+        ],
+        "recommendations": [
+          {
+            "title": "Add LinkedIn Profile",
+            "description": "Include your LinkedIn profile URL in the contact section. This is a standard expectation for tech roles and helps ATS match your profile.",
+            "category": "formatting",
+            "potentialGain": 2,
+            "priority": "low"
+          },
+          {
+            "title": "Quantify More Achievements",
+            "description": "Add specific metrics to remaining accomplishments (e.g., 'Improved performance by X%', 'Managed team of Y people'). You have some good examples but more would strengthen the resume.",
+            "category": "readability",
+            "potentialGain": 5,
+            "priority": "medium"
+          }
+        ],
+        "strengths": [
+          "Clear section structure with standard headings",
+          "Excellent use of quantifiable achievements",
+          "Proper date formatting (MM/YYYY)",
+          "Strong keyword presence for technical roles",
+          "Clean, single-column layout",
+          "Reverse chronological order maintained",
+          "Action verbs used consistently",
+          "Contact information properly formatted"
+        ],
+        "metadata": {
+          "analyzerVersion": "1.0.0",
+          "analyzedAt": "2025-10-04T10:45:00Z",
+          "resumeLength": 156,
+          "sectionsFound": ["Professional Summary", "Work Experience", "Education", "Skills"]
+        }
+      }
+    },
+    {
+      "name": "Resume with ATS issues",
+      "input": {
+        "content": "# Bob Smith\n\nbob.smith@email.com | 555-1234\n\n## About Me\n\nI am a passionate developer who loves coding!\n\n## Experience\n\nWorked at Company A from 2020 to now\n- Did some programming\n- Helped the team\n\nWorked at Company B in 2018-2019\n- Made websites\n\n## School\n\nGraduated from University with a degree\n\n## What I Know\n\nJavaScript, HTML, CSS and some other stuff",
+        "detailLevel": "comprehensive"
+      },
+      "output": {
+        "score": 42,
+        "rating": "fair",
+        "breakdown": {
+          "formatting": 12,
+          "keywords": 8,
+          "technical": 10,
+          "readability": 12
+        },
+        "issues": [
+          {
+            "category": "formatting",
+            "severity": "critical",
+            "description": "Phone number not in E.164 format (+1234567890)",
+            "location": "Contact Information",
+            "impact": 5
+          },
+          {
+            "category": "structure",
+            "severity": "critical",
+            "description": "Non-standard section heading 'About Me' (should be 'Professional Summary')",
+            "location": "About Me",
+            "impact": 8
+          },
+          {
+            "category": "structure",
+            "severity": "critical",
+            "description": "Non-standard section heading 'School' (should be 'Education')",
+            "location": "School",
+            "impact": 8
+          },
+          {
+            "category": "structure",
+            "severity": "critical",
+            "description": "Non-standard section heading 'What I Know' (should be 'Skills')",
+            "location": "What I Know",
+            "impact": 8
+          },
+          {
+            "category": "formatting",
+            "severity": "critical",
+            "description": "Work experience lacks proper job title format (should be ### Job Title at Company)",
+            "location": "Experience",
+            "impact": 10
+          },
+          {
+            "category": "formatting",
+            "severity": "warning",
+            "description": "Dates not in standard format (should be MM/YYYY - MM/YYYY or Present)",
+            "location": "Experience",
+            "impact": 5
+          },
+          {
+            "category": "readability",
+            "severity": "warning",
+            "description": "Vague responsibilities lacking specific achievements or metrics",
+            "location": "Experience",
+            "impact": 8
+          },
+          {
+            "category": "keywords",
+            "severity": "warning",
+            "description": "Weak keyword presence - missing specific technologies and frameworks",
+            "location": "Skills",
+            "impact": 12
+          },
+          {
+            "category": "readability",
+            "severity": "info",
+            "description": "Education section lacks detail (degree type, institution name, graduation date)",
+            "location": "School",
+            "impact": 4
+          },
+          {
+            "category": "compatibility",
+            "severity": "warning",
+            "description": "Personal pronouns used ('I am', 'I') - should use objective language",
+            "location": "About Me",
+            "impact": 5
+          }
+        ],
+        "recommendations": [
+          {
+            "title": "Use Standard Section Headings",
+            "description": "Replace non-standard headings with ATS-recognized ones: 'Professional Summary' instead of 'About Me', 'Education' instead of 'School', 'Skills' instead of 'What I Know'. This ensures ATS can properly parse your resume sections.",
+            "category": "structure",
+            "potentialGain": 24,
+            "priority": "high"
+          },
+          {
+            "title": "Format Work Experience Properly",
+            "description": "Use proper heading structure: '### [Job Title] at [Company Name]' followed by location and dates in bold. Include specific dates in MM/YYYY format.",
+            "category": "formatting",
+            "potentialGain": 15,
+            "priority": "high"
+          },
+          {
+            "title": "Add Quantifiable Achievements",
+            "description": "Replace vague statements like 'Did some programming' with specific accomplishments: 'Developed 5 production features serving 10K+ users' or 'Reduced load time by 40%'.",
+            "category": "readability",
+            "potentialGain": 8,
+            "priority": "high"
+          },
+          {
+            "title": "Expand Technical Skills",
+            "description": "List specific technologies, frameworks, tools, and methodologies. Instead of 'some other stuff', name concrete skills: specific frameworks (React, Vue), tools (Git, Docker), methodologies (Agile, TDD).",
+            "category": "keywords",
+            "potentialGain": 12,
+            "priority": "high"
+          },
+          {
+            "title": "Fix Phone Number Format",
+            "description": "Convert phone to E.164 format: +1234567890. This ensures ATS can properly extract and validate your contact information.",
+            "category": "formatting",
+            "potentialGain": 5,
+            "priority": "high"
+          },
+          {
+            "title": "Detail Education Background",
+            "description": "Include full degree name, major, institution name, location, and graduation date. Format: '### [Degree] - [Major] - [Institution]'",
+            "category": "structure",
+            "potentialGain": 4,
+            "priority": "medium"
+          },
+          {
+            "title": "Remove Personal Pronouns",
+            "description": "Remove 'I', 'me', 'my' from all sections. Use objective language: 'Passionate developer' instead of 'I am a passionate developer'.",
+            "category": "compatibility",
+            "potentialGain": 5,
+            "priority": "medium"
+          }
+        ],
+        "strengths": [
+          "Has all core sections present",
+          "Includes contact information",
+          "Uses bullet points for responsibilities",
+          "Mentions some technical skills"
+        ],
+        "metadata": {
+          "analyzerVersion": "1.0.0",
+          "analyzedAt": "2025-10-04T10:50:00Z",
+          "resumeLength": 58,
+          "sectionsFound": ["About Me", "Experience", "School", "What I Know"]
+        }
+      }
+    }
+  ],
+  "testScenarios": [
+    {
+      "description": "Should return high score for well-formatted ATS-friendly resume",
+      "input": {
+        "content": "# John Doe\n\n**Email**: john@example.com | **Phone**: +12345678901 | **Location**: New York, NY\n**LinkedIn**: https://linkedin.com/in/johndoe\n\n## Professional Summary\n\nSenior Engineer with 10 years of experience in enterprise software development.\n\n## Work Experience\n\n### Lead Engineer at TechCompany\n**New York, NY** | **01/2020 - Present**\n\n- Architected scalable microservices handling 5M+ requests/day\n- Led team of 8 engineers delivering 20+ features quarterly\n- Reduced infrastructure costs by 35% through optimization\n\n### Senior Developer at SoftwareCo\n**Boston, MA** | **06/2015 - 12/2019**\n\n- Developed customer-facing platform serving 100K+ users\n- Implemented CI/CD pipeline reducing deployment time by 70%\n\n## Education\n\n### MS Computer Science - Stanford University\n**Stanford, CA** | **Graduated: 05/2015**\nGPA: 3.9\n\n### BS Computer Engineering - MIT\n**Cambridge, MA** | **Graduated: 05/2013**\n\n## Skills\n\n**Languages**: Java, Python, JavaScript, TypeScript, Go\n**Frameworks**: Spring Boot, Django, React, Node.js, Express\n**Tools**: Docker, Kubernetes, Jenkins, AWS, Terraform\n**Methodologies**: Agile, Scrum, TDD, CI/CD",
+        "detailLevel": "detailed"
+      },
+      "expectedOutput": {
+        "score": 90,
+        "rating": "excellent"
+      },
+      "assertions": [
+        "output.score should be >= 85",
+        "output.rating should be 'excellent'",
+        "output.breakdown.formatting should be >= 25",
+        "output.breakdown.keywords should be >= 20",
+        "output.breakdown.technical should be >= 20",
+        "output.breakdown.readability should be >= 15",
+        "output.issues.length should be <= 3",
+        "output.strengths.length should be >= 8",
+        "breakdown scores should sum to total score"
+      ]
+    },
+    {
+      "description": "Should identify critical issues in poorly formatted resume",
+      "input": {
+        "content": "Bob\nemail: bob@email.com\nphone: 1234567890\n\nI worked at companies and did things.\n\nI went to school.\n\nI know programming.",
+        "detailLevel": "comprehensive"
+      },
+      "expectedOutput": {
+        "score": 25,
+        "rating": "poor"
+      },
+      "assertions": [
+        "output.score should be <= 40",
+        "output.rating should be 'poor'",
+        "output.issues should have at least 5 critical severity issues",
+        "output.issues should include MISSING_REQUIRED_SECTION or similar",
+        "output.recommendations.length should be >= 5",
+        "recommendations should be sorted by potentialGain descending"
+      ]
+    },
+    {
+      "description": "Should detect missing standard sections",
+      "input": {
+        "content": "# Test User\n\n**Email**: test@example.com | **Phone**: +11111111111\n\n## Work Experience\n\n### Engineer\n\n- Worked on things"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.issues should include issue with category='structure' for missing Education",
+        "output.issues should include issue with category='structure' for missing Skills",
+        "output.recommendations should include recommendation about adding Education section",
+        "output.recommendations should include recommendation about adding Skills section"
+      ]
+    },
+    {
+      "description": "Should detect invalid contact information formats",
+      "input": {
+        "content": "# User Name\n\n**Email**: not-an-email | **Phone**: 123-456-7890\n\n## Work Experience\n\n### Job\n\n- Work\n\n## Education\n\n### Degree\n\n## Skills\n\n**Tech**: Something"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.issues should include issue for invalid email format",
+        "output.issues should include issue for invalid phone format (not E.164)",
+        "output.recommendations should suggest fixing contact information"
+      ]
+    },
+    {
+      "description": "Should provide targeted recommendations based on job description",
+      "input": {
+        "content": "# Developer\n\n**Email**: dev@example.com | **Phone**: +12223334444\n\n## Work Experience\n\n### Developer at Company\n**Location** | **01/2020 - Present**\n\n- Built applications\n\n## Education\n\n### BS CS - University\n\n## Skills\n\n**Languages**: JavaScript",
+        "jobDescription": "Senior Python Developer needed with Django and AWS experience. Must have experience with microservices and REST APIs.",
+        "detailLevel": "comprehensive"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.issues should include keyword-related issues",
+        "output.recommendations should mention missing Python/Django keywords",
+        "output.recommendations should suggest adding AWS experience",
+        "output.recommendations should mention microservices/REST API experience"
+      ]
+    },
+    {
+      "description": "Should validate score breakdown sums to total score",
+      "input": {
+        "content": "# Valid Resume\n\n**Email**: valid@example.com | **Phone**: +19998887777\n\n## Work Experience\n\n### Engineer at Tech Inc\n**Remote** | **01/2020 - Present**\n\n- Developed features\n\n## Education\n\n### BS CS - School\n\n## Skills\n\n**Tech**: Java, Python"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.breakdown.formatting + output.breakdown.keywords + output.breakdown.technical + output.breakdown.readability should equal output.score",
+        "output.breakdown.formatting should be <= 30",
+        "output.breakdown.keywords should be <= 25",
+        "output.breakdown.technical should be <= 25",
+        "output.breakdown.readability should be <= 20"
+      ]
+    },
+    {
+      "description": "Should identify personal pronouns as compatibility issue",
+      "input": {
+        "content": "# My Resume\n\n**Email**: me@example.com | **Phone**: +15556667777\n\n## About Me\n\nI am a developer who loves to code. I have worked on many projects.\n\n## My Experience\n\n### My Job at Company\n\n- I developed features\n- I led my team\n\n## My Education\n\n### My Degree\n\n## My Skills\n\n**Languages**: JavaScript"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.issues should include issue about personal pronouns ('I', 'me', 'my')",
+        "output.recommendations should suggest removing personal pronouns",
+        "output.score should be negatively impacted by pronoun usage"
+      ]
+    },
+    {
+      "description": "Should return basic analysis when detailLevel=basic",
+      "input": {
+        "content": "# User\n\n**Email**: user@example.com | **Phone**: +10000000000\n\n## Work Experience\n\n### Role\n\n- Task\n\n## Education\n\n### Degree\n\n## Skills\n\n**Tech**: Tech",
+        "detailLevel": "basic"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output should have score and rating",
+        "output.issues.length should be <= 5 (only major issues in basic mode)",
+        "output.recommendations.length should be <= 3 (top recommendations only)",
+        "output.strengths should be present but concise"
+      ]
+    }
+  ]
+}

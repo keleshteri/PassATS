@@ -1,0 +1,243 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "validate-resume MCP Tool Contract",
+  "description": "Validates markdown-formatted resume content against the expected resume format schema",
+  "type": "object",
+  "tool": {
+    "name": "validate-resume",
+    "description": "Validates markdown resume content against template schema. Returns validation results with specific errors and guidance for corrections.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Markdown-formatted resume content to validate",
+          "minLength": 1
+        },
+        "strict": {
+          "type": "boolean",
+          "description": "Enable strict validation mode (optional, default: false)",
+          "default": false
+        }
+      },
+      "required": ["content"]
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "valid": {
+          "type": "boolean",
+          "description": "Whether the resume is valid"
+        },
+        "errors": {
+          "type": "array",
+          "description": "List of validation errors found",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "MISSING_REQUIRED_SECTION",
+                  "INVALID_MARKDOWN_STRUCTURE",
+                  "INVALID_DATE_FORMAT",
+                  "INVALID_EMAIL",
+                  "INVALID_PHONE",
+                  "INVALID_URL",
+                  "CONTENT_TOO_LONG",
+                  "EMPTY_SECTION",
+                  "INVALID_HEADING_HIERARCHY"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "description": "Human-readable error message"
+              },
+              "section": {
+                "type": "string",
+                "description": "Section where error occurred (optional)"
+              },
+              "line": {
+                "type": "number",
+                "description": "Line number where error occurred (optional)"
+              },
+              "suggestion": {
+                "type": "string",
+                "description": "Suggested fix for the error"
+              }
+            },
+            "required": ["code", "message", "suggestion"]
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "description": "Non-critical warnings",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "section": {
+                "type": "string"
+              }
+            },
+            "required": ["message"]
+          }
+        },
+        "structure": {
+          "type": "object",
+          "description": "Detected resume structure",
+          "properties": {
+            "sections": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "wordCount": {
+              "type": "number"
+            },
+            "experienceCount": {
+              "type": "number"
+            },
+            "educationCount": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "required": ["valid", "errors"]
+    }
+  },
+  "examples": [
+    {
+      "name": "Valid resume",
+      "input": {
+        "content": "# John Doe\n\n**Email**: john@example.com | **Phone**: +12345678901\n\n## Work Experience\n\n### Software Engineer at TechCorp\n**Remote** | **01/2020 - Present**\n\n- Developed features\n- Led team\n\n## Education\n\n### BS Computer Science - MIT\n**Cambridge, MA** | **Graduated: 05/2019**\n\n## Skills\n\n**Languages**: Python, JavaScript"
+      },
+      "output": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "structure": {
+          "sections": ["Work Experience", "Education", "Skills"],
+          "wordCount": 45,
+          "experienceCount": 1,
+          "educationCount": 1
+        }
+      }
+    },
+    {
+      "name": "Invalid resume - missing email",
+      "input": {
+        "content": "# John Doe\n\n**Phone**: +12345678901\n\n## Work Experience\n\n### Software Engineer at TechCorp"
+      },
+      "output": {
+        "valid": false,
+        "errors": [
+          {
+            "code": "INVALID_EMAIL",
+            "message": "Email address is required in contact section",
+            "section": "contact",
+            "line": 3,
+            "suggestion": "Add email in format: **Email**: your@email.com"
+          }
+        ],
+        "warnings": [],
+        "structure": {
+          "sections": ["Work Experience"],
+          "wordCount": 12,
+          "experienceCount": 1,
+          "educationCount": 0
+        }
+      }
+    }
+  ],
+  "testScenarios": [
+    {
+      "description": "Should validate a complete, well-formed resume",
+      "input": {
+        "content": "# Jane Smith\n\n**Email**: jane@example.com | **Phone**: +19876543210 | **Location**: San Francisco, CA\n\n## Professional Summary\n\nExperienced software engineer\n\n## Work Experience\n\n### Senior Engineer at BigCo\n**San Francisco, CA** | **06/2021 - Present**\n\n- Lead development\n- Mentor juniors\n\n### Engineer at StartupCo\n**Remote** | **01/2019 - 05/2021**\n\n- Built features\n\n## Education\n\n### MS Computer Science - Stanford\n**Stanford, CA** | **Graduated: 06/2018**\n\n## Skills\n\n**Languages**: TypeScript, Python\n**Frameworks**: React, Node.js"
+      },
+      "expectedOutput": {
+        "valid": true,
+        "errors": []
+      }
+    },
+    {
+      "description": "Should reject resume with missing required section (Education)",
+      "input": {
+        "content": "# John Doe\n\n**Email**: john@example.com | **Phone**: +12345678901\n\n## Work Experience\n\n### Engineer at Company\n**Location** | **01/2020 - Present**\n\n- Did work\n\n## Skills\n\n**Tech**: JavaScript"
+      },
+      "expectedOutput": {
+        "valid": false,
+        "errors": [
+          {
+            "code": "MISSING_REQUIRED_SECTION",
+            "message": "Required section 'Education' is missing"
+          }
+        ]
+      }
+    },
+    {
+      "description": "Should reject resume with invalid email format",
+      "input": {
+        "content": "# John Doe\n\n**Email**: not-an-email | **Phone**: +12345678901\n\n## Work Experience\n\n### Engineer\n\n- Work\n\n## Education\n\n### BS CS - University\n\n## Skills\n\n**Tech**: Python"
+      },
+      "expectedOutput": {
+        "valid": false,
+        "errors": [
+          {
+            "code": "INVALID_EMAIL",
+            "message": "Invalid email format: not-an-email"
+          }
+        ]
+      }
+    },
+    {
+      "description": "Should reject resume with invalid phone format",
+      "input": {
+        "content": "# John Doe\n\n**Email**: john@example.com | **Phone**: 123-456-7890\n\n## Work Experience\n\n### Engineer\n\n- Work\n\n## Education\n\n### Degree\n\n## Skills\n\n**Tech**: Java"
+      },
+      "expectedOutput": {
+        "valid": false,
+        "errors": [
+          {
+            "code": "INVALID_PHONE",
+            "message": "Phone must be in E.164 format (e.g., +12345678901)"
+          }
+        ]
+      }
+    },
+    {
+      "description": "Should provide helpful suggestions for incomplete sections",
+      "input": {
+        "content": "# John Doe\n\n**Email**: john@example.com | **Phone**: +12345678901\n\n## Work Experience\n\n## Education\n\n## Skills"
+      },
+      "expectedOutput": {
+        "valid": false,
+        "errors": [
+          {
+            "code": "EMPTY_SECTION",
+            "message": "Section 'Work Experience' is empty",
+            "section": "Work Experience",
+            "suggestion": "Add at least one work experience entry with job title, company, dates, and responsibilities"
+          },
+          {
+            "code": "EMPTY_SECTION",
+            "message": "Section 'Education' is empty",
+            "section": "Education",
+            "suggestion": "Add at least one education entry with degree, institution, and graduation date"
+          },
+          {
+            "code": "EMPTY_SECTION",
+            "message": "Section 'Skills' is empty",
+            "section": "Skills",
+            "suggestion": "Add at least one skill category with relevant skills"
+          }
+        ]
+      }
+    }
+  ]
+}

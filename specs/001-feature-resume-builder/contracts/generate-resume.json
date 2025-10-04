@@ -1,0 +1,342 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "generate-resume MCP Tool Contract",
+  "description": "Generates a formatted resume in DOCX, PDF, or HTML format from markdown content",
+  "type": "object",
+  "tool": {
+    "name": "generate-resume",
+    "description": "Generates a professionally formatted resume in the specified format (DOCX, PDF, or HTML) using the provided template and markdown content.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Valid markdown-formatted resume content",
+          "minLength": 1
+        },
+        "templateId": {
+          "type": "string",
+          "description": "Template identifier from list-resume-templates"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["docx", "pdf", "html"],
+          "description": "Output format for the generated resume"
+        },
+        "filename": {
+          "type": "string",
+          "description": "Optional custom filename (without extension)",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        }
+      },
+      "required": ["content", "templateId", "format"]
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Whether generation succeeded"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["docx", "pdf", "html"]
+        },
+        "filename": {
+          "type": "string",
+          "description": "Generated filename with extension"
+        },
+        "content": {
+          "type": "string",
+          "description": "Base64-encoded file content (for docx/pdf) or HTML string"
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME type of generated file"
+        },
+        "size": {
+          "type": "number",
+          "description": "File size in bytes"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "templateId": {
+              "type": "string"
+            },
+            "templateName": {
+              "type": "string"
+            },
+            "generatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "resumeName": {
+              "type": "string",
+              "description": "Resume owner's name extracted from content"
+            }
+          }
+        },
+        "error": {
+          "type": "object",
+          "description": "Error details if success=false",
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "TEMPLATE_NOT_FOUND",
+                "INVALID_CONTENT",
+                "RENDERING_FAILED",
+                "FILE_SIZE_EXCEEDED"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "details": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "required": ["success", "format"]
+    }
+  },
+  "examples": [
+    {
+      "name": "Generate DOCX resume",
+      "input": {
+        "content": "# Jane Doe\n\n**Email**: jane@example.com | **Phone**: +12345678901\n\n## Work Experience\n\n### Engineer at TechCorp\n**Remote** | **01/2020 - Present**\n\n- Built features\n\n## Education\n\n### BS CS - MIT\n\n## Skills\n\n**Languages**: Python",
+        "templateId": "professional-classic",
+        "format": "docx",
+        "filename": "jane-doe-resume"
+      },
+      "output": {
+        "success": true,
+        "format": "docx",
+        "filename": "jane-doe-resume.docx",
+        "content": "UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAA...",
+        "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "size": 15234,
+        "metadata": {
+          "templateId": "professional-classic",
+          "templateName": "Professional Classic",
+          "generatedAt": "2025-10-04T10:30:00Z",
+          "resumeName": "Jane Doe"
+        }
+      }
+    },
+    {
+      "name": "Generate PDF resume",
+      "input": {
+        "content": "# John Smith\n\n**Email**: john@example.com | **Phone**: +19876543210\n\n## Work Experience\n\n### Developer at StartupCo\n\n- Developed apps\n\n## Education\n\n### MS CS - Stanford\n\n## Skills\n\n**Tech**: JavaScript",
+        "templateId": "modern-tech",
+        "format": "pdf"
+      },
+      "output": {
+        "success": true,
+        "format": "pdf",
+        "filename": "john-smith-resume.pdf",
+        "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9U...",
+        "mimeType": "application/pdf",
+        "size": 24567,
+        "metadata": {
+          "templateId": "modern-tech",
+          "templateName": "Modern Tech",
+          "generatedAt": "2025-10-04T10:35:00Z",
+          "resumeName": "John Smith"
+        }
+      }
+    },
+    {
+      "name": "Generate HTML resume",
+      "input": {
+        "content": "# Alice Johnson\n\n**Email**: alice@example.com | **Phone**: +11234567890\n\n## Work Experience\n\n### Lead Engineer at BigCo\n\n- Led team\n\n## Education\n\n### PhD CS - Berkeley\n\n## Skills\n\n**Languages**: Rust",
+        "templateId": "academic-formal",
+        "format": "html"
+      },
+      "output": {
+        "success": true,
+        "format": "html",
+        "filename": "alice-johnson-resume.html",
+        "content": "<!DOCTYPE html><html><head><title>Alice Johnson - Resume</title>...",
+        "mimeType": "text/html",
+        "size": 8921,
+        "metadata": {
+          "templateId": "academic-formal",
+          "templateName": "Academic Formal",
+          "generatedAt": "2025-10-04T10:40:00Z",
+          "resumeName": "Alice Johnson"
+        }
+      }
+    },
+    {
+      "name": "Error - template not found",
+      "input": {
+        "content": "# Test User\n\n**Email**: test@example.com | **Phone**: +11111111111\n\n## Work Experience\n\n### Job\n\n- Work\n\n## Education\n\n### Degree\n\n## Skills\n\n**Tech**: Java",
+        "templateId": "non-existent-template",
+        "format": "docx"
+      },
+      "output": {
+        "success": false,
+        "format": "docx",
+        "error": {
+          "code": "TEMPLATE_NOT_FOUND",
+          "message": "Template 'non-existent-template' not found",
+          "details": {
+            "templateId": "non-existent-template",
+            "availableTemplates": ["professional-classic", "modern-tech", "academic-formal"]
+          }
+        }
+      }
+    }
+  ],
+  "testScenarios": [
+    {
+      "description": "Should generate valid DOCX file from valid markdown",
+      "input": {
+        "content": "# John Doe\n\n**Email**: john@example.com | **Phone**: +12345678901\n\n## Work Experience\n\n### Software Engineer at TechCorp\n**Remote** | **01/2020 - Present**\n\n- Developed microservices\n- Led team of 5\n\n## Education\n\n### BS Computer Science - MIT\n**Cambridge, MA** | **Graduated: 05/2019**\n\n## Skills\n\n**Languages**: Python, JavaScript, TypeScript\n**Frameworks**: React, Node.js, Django",
+        "templateId": "professional-classic",
+        "format": "docx"
+      },
+      "expectedOutput": {
+        "success": true,
+        "format": "docx"
+      },
+      "assertions": [
+        "output.success should be true",
+        "output.filename should end with .docx",
+        "output.content should be base64-encoded string",
+        "output.mimeType should be 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'",
+        "output.size should be > 0",
+        "output.metadata.resumeName should be 'John Doe'",
+        "output.metadata.templateId should be 'professional-classic'",
+        "Buffer.from(output.content, 'base64') should be valid DOCX file"
+      ]
+    },
+    {
+      "description": "Should generate valid PDF file with searchable text",
+      "input": {
+        "content": "# Jane Smith\n\n**Email**: jane@example.com | **Phone**: +19876543210\n\n## Work Experience\n\n### Senior Developer\n\n- Built features\n\n## Education\n\n### MS CS\n\n## Skills\n\n**Tech**: Java",
+        "templateId": "modern-tech",
+        "format": "pdf"
+      },
+      "expectedOutput": {
+        "success": true,
+        "format": "pdf"
+      },
+      "assertions": [
+        "output.success should be true",
+        "output.filename should end with .pdf",
+        "output.mimeType should be 'application/pdf'",
+        "output.content should be base64-encoded PDF",
+        "decoded PDF should contain searchable text 'Jane Smith'"
+      ]
+    },
+    {
+      "description": "Should generate valid HTML with proper structure",
+      "input": {
+        "content": "# Bob Jones\n\n**Email**: bob@example.com | **Phone**: +15555555555\n\n## Work Experience\n\n### Engineer\n\n- Coded\n\n## Education\n\n### BS\n\n## Skills\n\n**Languages**: Go",
+        "templateId": "professional-classic",
+        "format": "html"
+      },
+      "expectedOutput": {
+        "success": true,
+        "format": "html"
+      },
+      "assertions": [
+        "output.success should be true",
+        "output.filename should end with .html",
+        "output.mimeType should be 'text/html'",
+        "output.content should be valid HTML",
+        "HTML should contain <!DOCTYPE html>",
+        "HTML should include name 'Bob Jones'",
+        "HTML should include email 'bob@example.com'"
+      ]
+    },
+    {
+      "description": "Should use custom filename when provided",
+      "input": {
+        "content": "# Test User\n\n**Email**: test@test.com | **Phone**: +11111111111\n\n## Work Experience\n\n### Job\n\n- Work\n\n## Education\n\n### Degree\n\n## Skills\n\n**Tech**: Python",
+        "templateId": "professional-classic",
+        "format": "docx",
+        "filename": "my-custom-resume"
+      },
+      "expectedOutput": {
+        "filename": "my-custom-resume.docx"
+      },
+      "assertions": [
+        "output.filename should be 'my-custom-resume.docx'"
+      ]
+    },
+    {
+      "description": "Should auto-generate filename from name when not provided",
+      "input": {
+        "content": "# Alice Wonder\n\n**Email**: alice@example.com | **Phone**: +12223334444\n\n## Work Experience\n\n### Role\n\n- Task\n\n## Education\n\n### Degree\n\n## Skills\n\n**Skills**: Something",
+        "templateId": "professional-classic",
+        "format": "pdf"
+      },
+      "expectedOutput": {
+        "filename": "alice-wonder-resume.pdf"
+      },
+      "assertions": [
+        "output.filename should match pattern /alice.*wonder.*\\.pdf/i"
+      ]
+    },
+    {
+      "description": "Should return error for non-existent template",
+      "input": {
+        "content": "# User\n\n**Email**: user@example.com | **Phone**: +10000000000\n\n## Work Experience\n\n### Job\n\n- Work\n\n## Education\n\n### School\n\n## Skills\n\n**Tech**: Tech",
+        "templateId": "invalid-template-id",
+        "format": "docx"
+      },
+      "expectedOutput": {
+        "success": false
+      },
+      "assertions": [
+        "output.success should be false",
+        "output.error.code should be 'TEMPLATE_NOT_FOUND'",
+        "output.error.message should include template ID",
+        "output.error.details.availableTemplates should be an array"
+      ]
+    },
+    {
+      "description": "Should return error for invalid markdown content",
+      "input": {
+        "content": "This is not valid resume markdown",
+        "templateId": "professional-classic",
+        "format": "docx"
+      },
+      "expectedOutput": {
+        "success": false
+      },
+      "assertions": [
+        "output.success should be false",
+        "output.error.code should be 'INVALID_CONTENT'",
+        "output.error.message should indicate validation failure"
+      ]
+    },
+    {
+      "description": "Should preserve all content from markdown in generated document",
+      "input": {
+        "content": "# Test Person\n\n**Email**: test@example.com | **Phone**: +19999999999 | **Location**: San Francisco, CA\n**LinkedIn**: https://linkedin.com/in/testperson\n\n## Professional Summary\n\nExperienced engineer with 10 years\n\n## Work Experience\n\n### Senior Engineer at CompanyX\n**San Francisco, CA** | **06/2020 - Present**\n\n- Led architecture design\n- Mentored 10 engineers\n- Increased performance by 50%\n\n## Education\n\n### MS Computer Science - Stanford University\n**Stanford, CA** | **Graduated: 06/2015**\nGPA: 3.9\n\n## Skills\n\n**Languages**: Python, Java, JavaScript, Go\n**Frameworks**: Django, Spring Boot, React\n**Tools**: Docker, Kubernetes, AWS",
+        "templateId": "professional-classic",
+        "format": "docx"
+      },
+      "expectedOutput": {
+        "success": true
+      },
+      "assertions": [
+        "generated document should contain 'Test Person'",
+        "generated document should contain 'test@example.com'",
+        "generated document should contain 'San Francisco, CA'",
+        "generated document should contain 'linkedin.com/in/testperson'",
+        "generated document should contain 'Experienced engineer with 10 years'",
+        "generated document should contain 'Senior Engineer at CompanyX'",
+        "generated document should contain 'MS Computer Science - Stanford University'",
+        "generated document should contain 'Python, Java, JavaScript, Go'",
+        "generated document should contain 'Django, Spring Boot, React'"
+      ]
+    }
+  ]
+}

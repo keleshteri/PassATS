@@ -1,0 +1,223 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "list-resume-templates MCP Tool Contract",
+  "description": "Returns all available professional resume templates with their metadata",
+  "type": "object",
+  "tool": {
+    "name": "list-resume-templates",
+    "description": "Returns all available professional resume templates with metadata to help users select the appropriate template for their needs.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": ["professional", "modern", "creative", "academic", "technical"],
+          "description": "Filter templates by category (optional)"
+        },
+        "industryFocus": {
+          "type": "string",
+          "description": "Filter templates by industry focus (optional)"
+        }
+      }
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "templates": {
+          "type": "array",
+          "description": "List of available templates",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique template identifier"
+              },
+              "name": {
+                "type": "string",
+                "description": "Human-readable template name"
+              },
+              "description": {
+                "type": "string",
+                "description": "Brief description of template style"
+              },
+              "category": {
+                "type": "string",
+                "enum": ["professional", "modern", "creative", "academic", "technical"]
+              },
+              "industryFocus": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Suggested industries for this template"
+              },
+              "formalityLevel": {
+                "type": "string",
+                "enum": ["formal", "business", "casual"]
+              },
+              "features": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Template features (e.g., two-column, color-accents)"
+              },
+              "preview": {
+                "type": "string",
+                "description": "Base64 thumbnail or URL to preview image"
+              },
+              "version": {
+                "type": "string",
+                "description": "Template version (semver)"
+              }
+            },
+            "required": ["id", "name", "description", "category", "formalityLevel", "features", "version"]
+          }
+        },
+        "count": {
+          "type": "number",
+          "description": "Total number of templates returned"
+        }
+      },
+      "required": ["templates", "count"]
+    }
+  },
+  "examples": [
+    {
+      "name": "List all templates",
+      "input": {},
+      "output": {
+        "templates": [
+          {
+            "id": "professional-classic",
+            "name": "Professional Classic",
+            "description": "Traditional single-column format ideal for corporate and formal industries",
+            "category": "professional",
+            "industryFocus": ["finance", "consulting", "legal", "healthcare"],
+            "formalityLevel": "formal",
+            "features": ["single-column", "serif-font", "minimal", "ats-optimized"],
+            "preview": "data:image/png;base64,iVBOR...",
+            "version": "1.0.0"
+          },
+          {
+            "id": "modern-tech",
+            "name": "Modern Tech",
+            "description": "Clean, contemporary design for technology professionals",
+            "category": "modern",
+            "industryFocus": ["technology", "software", "startup"],
+            "formalityLevel": "business",
+            "features": ["single-column", "sans-serif", "accent-color", "icon-support"],
+            "preview": "data:image/png;base64,iVBOR...",
+            "version": "1.0.0"
+          }
+        ],
+        "count": 2
+      }
+    },
+    {
+      "name": "Filter by category",
+      "input": {
+        "category": "professional"
+      },
+      "output": {
+        "templates": [
+          {
+            "id": "professional-classic",
+            "name": "Professional Classic",
+            "description": "Traditional single-column format ideal for corporate and formal industries",
+            "category": "professional",
+            "industryFocus": ["finance", "consulting", "legal", "healthcare"],
+            "formalityLevel": "formal",
+            "features": ["single-column", "serif-font", "minimal", "ats-optimized"],
+            "version": "1.0.0"
+          }
+        ],
+        "count": 1
+      }
+    }
+  ],
+  "testScenarios": [
+    {
+      "description": "Should return all templates when no filters applied",
+      "input": {},
+      "expectedOutput": {
+        "count": 5
+      },
+      "assertions": [
+        "output.templates should be an array",
+        "output.templates.length should equal output.count",
+        "output.count should be >= 5",
+        "each template should have required fields: id, name, description, category, formalityLevel, features, version",
+        "template IDs should be unique"
+      ]
+    },
+    {
+      "description": "Should filter templates by category=professional",
+      "input": {
+        "category": "professional"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.templates should only contain templates with category='professional'",
+        "output.count should match output.templates.length",
+        "output.count should be >= 1"
+      ]
+    },
+    {
+      "description": "Should filter templates by category=modern",
+      "input": {
+        "category": "modern"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "output.templates should only contain templates with category='modern'",
+        "output.count should match output.templates.length"
+      ]
+    },
+    {
+      "description": "Should filter templates by industryFocus=technology",
+      "input": {
+        "industryFocus": "technology"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "each template.industryFocus should include 'technology'",
+        "output.count should be >= 1"
+      ]
+    },
+    {
+      "description": "Should return empty array for non-existent category",
+      "input": {
+        "category": "professional"
+      },
+      "expectedOutput": {},
+      "assertions": [
+        "if no templates match, output.templates should be []",
+        "if no templates match, output.count should be 0"
+      ]
+    },
+    {
+      "description": "Should include comprehensive metadata for each template",
+      "input": {},
+      "expectedOutput": {},
+      "assertions": [
+        "each template.id should be kebab-case format",
+        "each template.version should be valid semver",
+        "each template.formalityLevel should be one of: formal, business, casual",
+        "each template.category should be one of: professional, modern, creative, academic, technical",
+        "each template.features should be an array with at least 1 item",
+        "each template.industryFocus should be an array"
+      ]
+    },
+    {
+      "description": "Should return templates sorted by category then name",
+      "input": {},
+      "expectedOutput": {},
+      "assertions": [
+        "templates should be sorted by category (alphabetically)",
+        "within same category, templates should be sorted by name (alphabetically)"
+      ]
+    }
+  ]
+}
