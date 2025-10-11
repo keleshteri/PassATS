@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openspec list:*)",
+      "Bash(openspec show:*)",
+      "SlashCommand(/openspec:proposal)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
