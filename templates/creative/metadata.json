@@ -1,0 +1,104 @@
+{
+  "id": "creative-portfolio",
+  "name": "Creative Portfolio",
+  "description": "A visually appealing resume template for creative professionals with emphasis on portfolio and visual elements",
+  "category": "creative",
+  "industryFocus": ["design", "creative", "marketing"],
+  "formalityLevel": "casual",
+  "features": ["portfolio", "visual", "creative"],
+  "docxPath": "creative/template.docx",
+  "isActive": true,
+  "status": "active",
+  "version": "1.0.0",
+  "author": "PassATS Team",
+  "createdAt": "2025-01-05T00:00:00.000Z",
+  "updatedAt": "2025-01-05T00:00:00.000Z",
+  "tags": ["creative", "portfolio-focused", "visual", "design-oriented"],
+  "sections": [
+    {
+      "name": "contact",
+      "required": true,
+      "order": 1,
+      "heading": "Contact Information",
+      "description": "Name, email, phone, location, portfolio, and social media profiles"
+    },
+    {
+      "name": "Creative Summary",
+      "required": true,
+      "order": 2,
+      "heading": "Creative Summary",
+      "description": "Artistic vision and creative approach"
+    },
+    {
+      "name": "Portfolio Highlights",
+      "required": true,
+      "order": 3,
+      "heading": "Portfolio Highlights",
+      "description": "Showcase of best creative work and projects"
+    },
+    {
+      "name": "experience",
+      "required": true,
+      "order": 4,
+      "heading": "Work Experience",
+      "description": "Professional experience in creative roles"
+    },
+    {
+      "name": "skills",
+      "required": true,
+      "order": 5,
+      "heading": "Skills & Tools",
+      "description": "Creative software, techniques, and methodologies"
+    },
+    {
+      "name": "education",
+      "required": false,
+      "order": 6,
+      "heading": "Education",
+      "description": "Art education, workshops, and training"
+    },
+    {
+      "name": "Exhibitions & Shows",
+      "required": false,
+      "order": 7,
+      "heading": "Exhibitions & Shows",
+      "description": "Public displays of creative work"
+    },
+    {
+      "name": "Awards & Recognition",
+      "required": false,
+      "order": 8,
+      "heading": "Awards & Recognition",
+      "description": "Creative awards and industry recognition"
+    }
+  ],
+  "formatting": {
+    "fontFamily": "Helvetica, sans-serif",
+    "fontSize": "10pt",
+    "lineHeight": "1.3",
+    "margins": {
+      "top": "0.5in",
+      "bottom": "0.5in",
+      "left": "0.5in",
+      "right": "0.5in"
+    },
+    "colors": {
+      "primary": "#2c3e50",
+      "secondary": "#7f8c8d",
+      "accent": "#e74c3c"
+    }
+  },
+  "atsOptimization": {
+    "keywords": true,
+    "standardSections": true,
+    "simpleFormatting": true,
+    "noGraphics": true,
+    "noColumns": true,
+    "standardFonts": true
+  },
+  "preview": "A creative layout emphasizing portfolio work and artistic achievements. Designed for designers, artists, and creative professionals.",
+  "usage": {
+    "bestFor": ["Graphic design", "UX/UI design", "Art direction", "Creative writing", "Marketing creative"],
+    "notRecommendedFor": ["Technical roles", "Corporate positions", "ATS-heavy applications"]
+  }
+}

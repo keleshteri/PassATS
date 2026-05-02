@@ -1,0 +1,20 @@
+# Creative Portfolio Template Placeholder
+
+This is a placeholder for the DOCX template file for the Creative Portfolio template.
+
+Template variables:
+- {{contactInfo.fullName}}
+- {{contactInfo.email}}
+- {{contactInfo.phone}}
+- {{contactInfo.location}}
+- {{contactInfo.portfolio}}
+- {{contactInfo.linkedin}}
+
+Sections:
+- {{#creativeSummary}}
+- {{#portfolioHighlights}}
+- {{#workExperience}}
+- {{#skillsAndTools}}
+- {{#education}}
+- {{#exhibitionsAndShows}}
+- {{#awardsAndRecognition}}

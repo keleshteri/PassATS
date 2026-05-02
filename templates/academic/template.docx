@@ -1,0 +1,19 @@
+# Academic Scholar Template Placeholder
+
+This is a placeholder for the DOCX template file for the Academic Scholar template.
+
+Template variables:
+- {{contactInfo.fullName}}
+- {{contactInfo.email}}
+- {{contactInfo.phone}}
+- {{contactInfo.institution}}
+
+Sections:
+- {{#education}}
+- {{#academicAppointments}}
+- {{#publications}}
+- {{#researchExperience}}
+- {{#teachingExperience}}
+- {{#grantsAndFunding}}
+- {{#professionalService}}
+- {{#awardsAndHonors}}

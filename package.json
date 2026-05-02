@@ -47,10 +47,17 @@
   "homepage": "https://github.com/keleshteri/PassATS#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.19.1",
+    "@types/markdown-it": "^14.1.2",
+    "@types/uuid": "^10.0.0",
     "cors": "^2.8.5",
+    "docxtemplater": "^3.66.5",
     "dotenv": "^16.4.5",
     "express": "^5.1.0",
     "fast-glob": "^3.3.3",
+    "markdown-it": "^14.1.0",
+    "pizzip": "^3.2.0",
+    "puppeteer": "^24.23.0",
+    "uuid": "^13.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -1,0 +1,118 @@
+{
+  "id": "academic-scholar",
+  "name": "Academic Scholar",
+  "description": "A comprehensive resume template designed for academic professionals, researchers, and educators",
+  "category": "academic",
+  "industryFocus": ["education", "academia", "research"],
+  "formalityLevel": "formal",
+  "features": ["publications", "research", "academic"],
+  "docxPath": "academic/template.docx",
+  "isActive": true,
+  "status": "active",
+  "version": "1.0.0",
+  "author": "PassATS Team",
+  "createdAt": "2025-01-05T00:00:00.000Z",
+  "updatedAt": "2025-01-05T00:00:00.000Z",
+  "tags": ["academic", "research-focused", "publication-oriented", "scholarly"],
+  "sections": [
+    {
+      "name": "contact",
+      "required": true,
+      "order": 1,
+      "heading": "Contact Information",
+      "description": "Name, title, email, phone, institution, and academic profiles"
+    },
+    {
+      "name": "education",
+      "required": true,
+      "order": 2,
+      "heading": "Education",
+      "description": "Academic degrees in reverse chronological order"
+    },
+    {
+      "name": "experience",
+      "required": true,
+      "order": 3,
+      "heading": "Academic Appointments",
+      "description": "Teaching and research positions"
+    },
+    {
+      "name": "Publications",
+      "required": true,
+      "order": 4,
+      "heading": "Publications",
+      "description": "Research papers, books, and scholarly articles"
+    },
+    {
+      "name": "skills",
+      "required": true,
+      "order": 5,
+      "heading": "Skills & Expertise",
+      "description": "Research methodologies, academic skills, and areas of expertise"
+    },
+    {
+      "name": "Research Experience",
+      "required": true,
+      "order": 6,
+      "heading": "Research Experience",
+      "description": "Research projects and methodologies"
+    },
+    {
+      "name": "Teaching Experience",
+      "required": false,
+      "order": 7,
+      "heading": "Teaching Experience",
+      "description": "Courses taught and teaching philosophy"
+    },
+    {
+      "name": "Grants & Funding",
+      "required": false,
+      "order": 8,
+      "heading": "Grants & Funding",
+      "description": "Research grants and funding received"
+    },
+    {
+      "name": "Professional Service",
+      "required": false,
+      "order": 9,
+      "heading": "Professional Service",
+      "description": "Committee work, editorial boards, and professional organizations"
+    },
+    {
+      "name": "Awards & Honors",
+      "required": false,
+      "order": 10,
+      "heading": "Awards & Honors",
+      "description": "Academic awards, fellowships, and recognition"
+    }
+  ],
+  "formatting": {
+    "fontFamily": "Times New Roman, serif",
+    "fontSize": "11pt",
+    "lineHeight": "1.2",
+    "margins": {
+      "top": "1in",
+      "bottom": "1in",
+      "left": "1in",
+      "right": "1in"
+    },
+    "colors": {
+      "primary": "#000000",
+      "secondary": "#333333",
+      "accent": "#000000"
+    }
+  },
+  "atsOptimization": {
+    "keywords": true,
+    "standardSections": true,
+    "simpleFormatting": true,
+    "noGraphics": true,
+    "noColumns": true,
+    "standardFonts": true
+  },
+  "preview": "A formal academic layout emphasizing research, publications, and scholarly achievements. Suitable for university and research positions.",
+  "usage": {
+    "bestFor": ["University faculty", "Research positions", "Postdoctoral roles", "Academic administration"],
+    "notRecommendedFor": ["Industry positions", "Non-academic roles", "Creative positions"]
+  }
+}

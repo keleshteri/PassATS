@@ -1,0 +1,19 @@
+# Professional Classic Template Placeholder
+
+This is a placeholder for the DOCX template file. In a real implementation, this would be a proper DOCX file created with docxtemplater placeholders.
+
+Template variables:
+- {{contactInfo.fullName}}
+- {{contactInfo.email}}
+- {{contactInfo.phone}}
+- {{contactInfo.location}}
+- {{contactInfo.linkedin}}
+- {{contactInfo.github}}
+
+Sections:
+- {{#workExperience}}
+- {{#education}}
+- {{#skills}}
+- {{#certifications}}
+- {{#projects}}
+- {{#awards}}

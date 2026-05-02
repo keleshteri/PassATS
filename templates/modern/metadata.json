@@ -1,0 +1,104 @@
+{
+  "id": "modern-tech",
+  "name": "Modern Tech",
+  "description": "A contemporary resume template designed for technology professionals with a focus on skills and achievements",
+  "category": "modern",
+  "industryFocus": ["technology", "software", "startup"],
+  "formalityLevel": "business",
+  "features": ["modern", "tech", "skills"],
+  "docxPath": "modern/template.docx",
+  "isActive": true,
+  "status": "active",
+  "version": "1.0.0",
+  "author": "PassATS Team",
+  "createdAt": "2025-01-05T00:00:00.000Z",
+  "updatedAt": "2025-01-05T00:00:00.000Z",
+  "tags": ["contemporary", "tech-focused", "skills-heavy", "achievement-oriented"],
+  "sections": [
+    {
+      "name": "contact",
+      "required": true,
+      "order": 1,
+      "heading": "Contact Information",
+      "description": "Name, email, phone, location, GitHub, LinkedIn, and portfolio"
+    },
+    {
+      "name": "Professional Summary",
+      "required": true,
+      "order": 2,
+      "heading": "Professional Summary",
+      "description": "Brief summary highlighting technical expertise and career focus"
+    },
+    {
+      "name": "skills",
+      "required": true,
+      "order": 3,
+      "heading": "Technical Skills",
+      "description": "Programming languages, frameworks, tools, and technologies"
+    },
+    {
+      "name": "experience",
+      "required": true,
+      "order": 4,
+      "heading": "Work Experience",
+      "description": "Professional experience with focus on technical achievements"
+    },
+    {
+      "name": "Projects",
+      "required": true,
+      "order": 5,
+      "heading": "Projects",
+      "description": "Notable technical projects with descriptions and technologies used"
+    },
+    {
+      "name": "education",
+      "required": false,
+      "order": 6,
+      "heading": "Education",
+      "description": "Academic background and relevant coursework"
+    },
+    {
+      "name": "Certifications",
+      "required": false,
+      "order": 7,
+      "heading": "Certifications",
+      "description": "Technical certifications and online courses"
+    },
+    {
+      "name": "Open Source",
+      "required": false,
+      "order": 8,
+      "heading": "Open Source",
+      "description": "Open source contributions and side projects"
+    }
+  ],
+  "formatting": {
+    "fontFamily": "Segoe UI, sans-serif",
+    "fontSize": "10pt",
+    "lineHeight": "1.2",
+    "margins": {
+      "top": "0.5in",
+      "bottom": "0.5in",
+      "left": "0.5in",
+      "right": "0.5in"
+    },
+    "colors": {
+      "primary": "#1a1a1a",
+      "secondary": "#666666",
+      "accent": "#007acc"
+    }
+  },
+  "atsOptimization": {
+    "keywords": true,
+    "standardSections": true,
+    "simpleFormatting": true,
+    "noGraphics": true,
+    "noColumns": true,
+    "standardFonts": true
+  },
+  "preview": "A modern, clean design with emphasis on technical skills and project experience. Optimized for tech industry applications.",
+  "usage": {
+    "bestFor": ["Software engineering", "DevOps", "Data science", "Product management", "Startup environments"],
+    "notRecommendedFor": ["Traditional corporate roles", "Non-technical positions", "Government applications"]
+  }
+}

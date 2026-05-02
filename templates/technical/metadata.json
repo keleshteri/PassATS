@@ -1,0 +1,111 @@
+{
+  "id": "technical-expert",
+  "name": "Technical Expert",
+  "description": "A detailed technical resume template for engineers, architects, and technical specialists",
+  "category": "technical",
+  "industryFocus": ["engineering", "technical", "manufacturing"],
+  "formalityLevel": "formal",
+  "features": ["technical", "engineering", "detailed"],
+  "docxPath": "technical/template.docx",
+  "isActive": true,
+  "status": "active",
+  "version": "1.0.0",
+  "author": "PassATS Team",
+  "createdAt": "2025-01-05T00:00:00.000Z",
+  "updatedAt": "2025-01-05T00:00:00.000Z",
+  "tags": ["technical", "engineering-focused", "detail-oriented", "specialized"],
+  "sections": [
+    {
+      "name": "contact",
+      "required": true,
+      "order": 1,
+      "heading": "Contact Information",
+      "description": "Name, title, email, phone, location, and professional profiles"
+    },
+    {
+      "name": "Technical Summary",
+      "required": true,
+      "order": 2,
+      "heading": "Technical Summary",
+      "description": "Technical expertise and specialization areas"
+    },
+    {
+      "name": "skills",
+      "required": true,
+      "order": 3,
+      "heading": "Technical Skills",
+      "description": "Engineering disciplines, software, tools, and methodologies"
+    },
+    {
+      "name": "experience",
+      "required": true,
+      "order": 4,
+      "heading": "Professional Experience",
+      "description": "Technical roles and engineering projects"
+    },
+    {
+      "name": "education",
+      "required": true,
+      "order": 5,
+      "heading": "Education",
+      "description": "Engineering degrees and technical certifications"
+    },
+    {
+      "name": "Technical Projects",
+      "required": true,
+      "order": 6,
+      "heading": "Technical Projects",
+      "description": "Engineering projects with technical specifications"
+    },
+    {
+      "name": "Certifications & Licenses",
+      "required": false,
+      "order": 7,
+      "heading": "Certifications & Licenses",
+      "description": "Professional engineering licenses and technical certifications"
+    },
+    {
+      "name": "Publications & Patents",
+      "required": false,
+      "order": 8,
+      "heading": "Publications & Patents",
+      "description": "Technical publications and intellectual property"
+    },
+    {
+      "name": "Professional Memberships",
+      "required": false,
+      "order": 9,
+      "heading": "Professional Memberships",
+      "description": "Engineering societies and professional organizations"
+    }
+  ],
+  "formatting": {
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "10pt",
+    "lineHeight": "1.15",
+    "margins": {
+      "top": "0.75in",
+      "bottom": "0.75in",
+      "left": "0.75in",
+      "right": "0.75in"
+    },
+    "colors": {
+      "primary": "#2c3e50",
+      "secondary": "#7f8c8d",
+      "accent": "#27ae60"
+    }
+  },
+  "atsOptimization": {
+    "keywords": true,
+    "standardSections": true,
+    "simpleFormatting": true,
+    "noGraphics": true,
+    "noColumns": true,
+    "standardFonts": true
+  },
+  "preview": "A technical layout emphasizing engineering expertise, project details, and specialized skills. Designed for technical professionals and engineers.",
+  "usage": {
+    "bestFor": ["Engineering roles", "Technical architecture", "Systems engineering", "Consulting", "Technical leadership"],
+    "notRecommendedFor": ["Non-technical roles", "Creative positions", "Entry-level positions"]
+  }
+}

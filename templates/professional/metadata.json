@@ -1,0 +1,104 @@
+{
+  "id": "professional-classic",
+  "name": "Professional Classic",
+  "description": "A clean, traditional resume template perfect for corporate environments and ATS systems",
+  "category": "professional",
+  "industryFocus": ["general", "corporate", "business"],
+  "formalityLevel": "formal",
+  "features": ["traditional", "corporate", "ats-friendly"],
+  "docxPath": "professional/template.docx",
+  "isActive": true,
+  "status": "active",
+  "version": "1.0.0",
+  "author": "PassATS Team",
+  "createdAt": "2025-01-05T00:00:00.000Z",
+  "updatedAt": "2025-01-05T00:00:00.000Z",
+  "tags": ["traditional", "corporate", "ats-friendly", "clean"],
+  "sections": [
+    {
+      "name": "contact",
+      "required": true,
+      "order": 1,
+      "heading": "Contact Information",
+      "description": "Name, email, phone, location, and professional profiles"
+    },
+    {
+      "name": "Professional Summary",
+      "required": true,
+      "order": 2,
+      "heading": "Professional Summary",
+      "description": "2-3 sentence summary of your professional background"
+    },
+    {
+      "name": "experience",
+      "required": true,
+      "order": 3,
+      "heading": "Work Experience",
+      "description": "Employment history in reverse chronological order"
+    },
+    {
+      "name": "education",
+      "required": true,
+      "order": 4,
+      "heading": "Education",
+      "description": "Academic background and degrees"
+    },
+    {
+      "name": "skills",
+      "required": true,
+      "order": 5,
+      "heading": "Skills",
+      "description": "Technical and soft skills relevant to your field"
+    },
+    {
+      "name": "Certifications",
+      "required": false,
+      "order": 6,
+      "heading": "Certifications",
+      "description": "Professional certifications and licenses"
+    },
+    {
+      "name": "Projects",
+      "required": false,
+      "order": 7,
+      "heading": "Projects",
+      "description": "Notable projects and achievements"
+    },
+    {
+      "name": "Awards",
+      "required": false,
+      "order": 8,
+      "heading": "Awards",
+      "description": "Recognition and awards received"
+    }
+  ],
+  "formatting": {
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "11pt",
+    "lineHeight": "1.15",
+    "margins": {
+      "top": "0.75in",
+      "bottom": "0.75in",
+      "left": "0.75in",
+      "right": "0.75in"
+    },
+    "colors": {
+      "primary": "#2c3e50",
+      "secondary": "#7f8c8d",
+      "accent": "#3498db"
+    }
+  },
+  "atsOptimization": {
+    "keywords": true,
+    "standardSections": true,
+    "simpleFormatting": true,
+    "noGraphics": true,
+    "noColumns": true,
+    "standardFonts": true
+  },
+  "preview": "A traditional, clean layout with clear section headers and bullet points. Perfect for ATS systems and traditional industries.",
+  "usage": {
+    "bestFor": ["Corporate roles", "Traditional industries", "Government positions", "ATS-heavy applications"],
+    "notRecommendedFor": ["Creative roles", "Design positions", "Startup environments"]
+  }
+}

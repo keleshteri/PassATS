@@ -1,0 +1,20 @@
+# Technical Expert Template Placeholder
+
+This is a placeholder for the DOCX template file for the Technical Expert template.
+
+Template variables:
+- {{contactInfo.fullName}}
+- {{contactInfo.email}}
+- {{contactInfo.phone}}
+- {{contactInfo.location}}
+- {{contactInfo.linkedin}}
+
+Sections:
+- {{#technicalSummary}}
+- {{#technicalSkills}}
+- {{#professionalExperience}}
+- {{#education}}
+- {{#technicalProjects}}
+- {{#certificationsAndLicenses}}
+- {{#publicationsAndPatents}}
+- {{#professionalMemberships}}
